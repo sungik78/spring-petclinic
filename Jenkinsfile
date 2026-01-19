@@ -12,20 +12,20 @@ pipeline {
       steps {
         git url: 'https://github.com/sungik78/spring-petclinic.git/', branch: 'main'
       }
-      // Maven을 이용해 Build 한다.
-      stage('Maven Build') {
-        steps {
-          sh 'mvn -Dmaven.test.failure.ignore=true clean package'
+    }
+    // Maven을 이용해 Build 한다.
+    stage('Maven Build') {
+      steps {
+        sh 'mvn -Dmaven.test.failure.ignore=true clean package'
+      }
+      post {
+        success {
+          echo 'Maven Build Success'
         }
-        post {
-          success {
-            echo 'Maven Build Success'
-          }
-          failure {
-            echo 'Maven Build Failed'
-          }
+        failure {
+          echo 'Maven Build Failed'
         }
       }
-    
+    }
   }
 }
