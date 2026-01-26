@@ -60,6 +60,30 @@ pipeline {
         sh 'docker rmi -f spring-petclinic:$BUILD_NUMBER'
       }
     }
+
+    // SSH Publish
+    stage('SSH Publish') {
+      step{
+        echo 'SSH Publish'
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'target',
+        transfers: [sshTransfer(cleanRemote: false,
+        excludes: '',
+        execCommand: '''
+        docker rm -f $(docker ps -aq)
+        docker rmi -f $(docker image -q)
+        docker run -itd -q 80:8080 --name=spring-petclinic sungikpark7/spring-petclinic:latest''',
+        execTimeout: 120000,
+        flatten: false,
+        makeEmptyDirs: false,
+        noDefaultExcludes: false,
+        patternSeparator: '[, ]+',
+        remoteDirectory: '',
+        remoteDirectorySDF: false,
+        removePrefix: 'target', sourceFiles: '')],
+        usePromotionTimestamp: false,
+        useWorkspaceInPromotion: false, verbose: false)])
+      }
+    }
     
   }
 }
