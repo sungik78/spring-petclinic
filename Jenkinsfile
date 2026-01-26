@@ -63,7 +63,7 @@ pipeline {
 
     // SSH Publish
     stage('SSH Publish') {
-      step{
+      steps {
         echo 'SSH Publish'
         sshPublisher(publishers: [sshPublisherDesc(configName: 'target',
         transfers: [sshTransfer(cleanRemote: false,
