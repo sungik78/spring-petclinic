@@ -46,7 +46,7 @@ pipeline {
     stage('Docker Image Upload') {
       steps {
         echo 'Docker Image Upload'
-        sh"""
+        sh """
         echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
         docker push sungikpark7/spring-petclinic:latest
         """
